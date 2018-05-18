@@ -13,7 +13,25 @@
 // limitations under the License.
 
 // eslint-disable-next-line import/prefer-default-export
+const hasNameTag = ({ key, value}) => (key === 'name') && value;
+
 export function getTraceName(spans) {
+
+  const spansWithNameTag = spans.filter(sp => sp.tags && sp.tags.some(hasNameTag));
+  if (spansWithNameTag && spansWithNameTag.length) {
+    let name = `${spansWithNameTag[0].process.serviceName}: ${spansWithNameTag[0].operationName}`;
+    for (let i = 0; i <= spansWithNameTag.length; i++) {
+      for (let j = 0; j <= spansWithNameTag[i].tags.length; j++) {
+        const {key, value} = spansWithNameTag[i].tags[j];
+        if (key === 'name') {
+            name = `${spansWithNameTag[i].process.serviceName}: ${value}`;
+        }
+      }
+    }
+
+    return name;
+  }
+
   const span = spans.filter(sp => !sp.references || !sp.references.length)[0];
   return span ? `${span.process.serviceName}: ${span.operationName}` : '';
 }

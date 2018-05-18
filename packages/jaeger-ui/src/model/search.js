@@ -64,6 +64,13 @@ export function getTraceSummary(trace: Trace): TraceSummary {
       const { operationName } = spans[i];
       traceName = `${svcData.name}: ${operationName}`;
     }
+
+    for (let i = 0; i < tags.length; i++) {
+      const {key, value} = tags[i];
+      if (key === 'name') {
+          traceName = `${svcData.name}: ${value}`;
+      }
+    }
   }
   return {
     traceName,

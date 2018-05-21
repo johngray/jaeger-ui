@@ -20,11 +20,12 @@ export function getTraceName(spans) {
   const spansWithNameTag = spans.filter(sp => sp.tags && sp.tags.some(hasNameTag));
   if (spansWithNameTag && spansWithNameTag.length) {
     let name = `${spansWithNameTag[0].process.serviceName}: ${spansWithNameTag[0].operationName}`;
-    for (let i = 0; i <= spansWithNameTag.length; i++) {
-      for (let j = 0; j <= spansWithNameTag[i].tags.length; j++) {
-        const {key, value} = spansWithNameTag[i].tags[j];
-        if (key === 'name') {
-            name = `${spansWithNameTag[i].process.serviceName}: ${value}`;
+    for (let i = 0; i < spansWithNameTag.length; i++) {
+      let span = spansWithNameTag[i];
+      for (let j = 0; j < span.tags.length; j++) {
+        let { key, value} = span.tags[j];
+        if (key == 'name') {
+            name = `${span.process.serviceName}: ${value}`;
         }
       }
     }

@@ -33,6 +33,6 @@ export function getTraceName(spans) {
     return name;
   }
 
-  const span = spans.filter(sp => !sp.references || !sp.references.length)[0];
+  const span = spans[0];
   return span ? `${span.process.serviceName}: ${span.operationName}` : '';
 }
